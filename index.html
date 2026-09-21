@@ -260,10 +260,11 @@ function calc(now){
   var effFun=Math.max(0,Math.min(S.funCap||0,left-effSave));
   var funBudget=effFun+(S.funBonus[mk]||0);
   var poolTotal=salary-fixedTot-debtTot-fund-effSave-effFun;
+  var ms=S.expenses.filter(function(e){return e.date.indexOf(mk)===0});
   var sd=(S.startDate&&S.startDate.indexOf(mk)===0)?(parseInt(S.startDate.slice(8),10)||1):1;
+  ms.forEach(function(e){var dn=parseInt(e.date.slice(8),10);if(dn&&dn<sd)sd=dn});
   var span=N-sd+1;
   var poolEff=poolTotal>0?poolTotal*span/N:poolTotal;
-  var ms=S.expenses.filter(function(e){return e.date.indexOf(mk)===0});
   var depMonth=S.deposits.filter(function(x){return x.date.indexOf(mk)===0});
   var depAll=sum(depMonth,function(x){return x.amount});
   var depSal=sum(depMonth.filter(function(x){return x.src!=='extra'}),function(x){return x.amount});
